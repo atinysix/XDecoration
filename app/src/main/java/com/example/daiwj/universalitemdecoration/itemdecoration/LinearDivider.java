@@ -1,12 +1,10 @@
-package com.example.daiwj.recyclerviewdemo.itemdecoration;
+package com.example.daiwj.universalitemdecoration.itemdecoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import com.example.daiwj.recyclerviewdemo.Rec;
 
 /**
  * 描述:

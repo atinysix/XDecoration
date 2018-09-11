@@ -1,4 +1,4 @@
-package com.example.daiwj.recyclerviewdemo;
+package com.example.daiwj.universalitemdecoration;
 
 /**
  * 描述:

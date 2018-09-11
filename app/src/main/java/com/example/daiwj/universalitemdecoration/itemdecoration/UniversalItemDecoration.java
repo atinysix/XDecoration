@@ -1,4 +1,4 @@
-package com.example.daiwj.recyclerviewdemo.itemdecoration;
+package com.example.daiwj.universalitemdecoration.itemdecoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -6,7 +6,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.SparseArray;
 import android.view.View;
 
 import java.util.HashMap;

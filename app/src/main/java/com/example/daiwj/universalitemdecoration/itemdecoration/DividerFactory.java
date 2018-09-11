@@ -1,4 +1,4 @@
-package com.example.daiwj.recyclerviewdemo.itemdecoration;
+package com.example.daiwj.universalitemdecoration.itemdecoration;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;

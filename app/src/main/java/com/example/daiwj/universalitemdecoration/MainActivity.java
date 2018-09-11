@@ -1,4 +1,4 @@
-package com.example.daiwj.recyclerviewdemo;
+package com.example.daiwj.universalitemdecoration;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.daiwj.recyclerviewdemo.itemdecoration.UniversalItemDecoration;
+import com.example.daiwj.universalitemdecoration.itemdecoration.UniversalItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
