@@ -62,7 +62,7 @@ public class GridDivider extends Divider {
 
     @Override
     protected void getItemOffsets(Rect outRect, View child, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
-        final boolean isSingleSpan = isSingleSpan(parent, child);
+        final boolean isSingleSpan = isFullSpan(parent, child);
         final int spanCount = getSpanCount(parent, child);
         final int spanIndex = getSpanIndex(parent, child);
         final int spanIndexLoop = spanIndex % spanCount;
@@ -147,7 +147,7 @@ public class GridDivider extends Divider {
         return lp.getSpanIndex();
     }
 
-    public boolean isSingleSpan(RecyclerView parent, View child) {
+    public boolean isFullSpan(RecyclerView parent, View child) {
         GridLayoutManager manager = (GridLayoutManager) parent.getLayoutManager();
         int itemPosition = parent.getChildAdapterPosition(child);
         return manager.getSpanSizeLookup().getSpanSize(itemPosition) == manager.getSpanCount();

@@ -22,8 +22,6 @@ public class LinearDivider extends Divider {
         this.dividerSize = dividerSize;
     }
 
-    Rect mBounds = new Rect();
-
     @Override
     protected void drawVertical(Canvas c, RecyclerView parent, View child, Divider divider, UniversalItemDecoration decoration) {
 

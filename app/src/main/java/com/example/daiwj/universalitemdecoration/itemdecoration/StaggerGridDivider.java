@@ -21,7 +21,7 @@ public class StaggerGridDivider extends GridDivider {
     }
 
     @Override
-    public boolean isSingleSpan(RecyclerView parent, View child) {
+    public boolean isFullSpan(RecyclerView parent, View child) {
         StaggeredGridLayoutManager.LayoutParams lp = (StaggeredGridLayoutManager.LayoutParams) child.getLayoutParams();
         return lp.isFullSpan();
     }
