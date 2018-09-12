@@ -61,7 +61,7 @@ public final class UniversalItemDecoration extends RecyclerView.ItemDecoration {
             }
 
             if (divider != null) {
-                divider.dispatchDraw(c, parent, child, divider, this);
+                divider.draw(c, parent, child, divider, this);
             }
         }
     }

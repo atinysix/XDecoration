@@ -40,13 +40,13 @@ public class LinearDivider extends Divider {
             right = child.getRight() + params.rightMargin;
             top = child.getBottom() + params.bottomMargin;
 
-            if (dividerSize >= 0) {
+            if (dividerSize > 0) {
                 bottom = top + dividerSize;
             } else {
                 bottom = top + drawable.getIntrinsicHeight();
             }
 
-            draw(c, left, top, right, bottom);
+            onDraw(c, left, top, right, bottom);
         }
     }
 
@@ -67,7 +67,7 @@ public class LinearDivider extends Divider {
             left = child.getRight() + params.rightMargin;
             top = child.getTop() - params.topMargin;
 
-            if (dividerSize >= 0) {
+            if (dividerSize > 0) {
                 right = left + dividerSize;
             } else {
                 right = left + drawable.getIntrinsicWidth();
@@ -75,7 +75,7 @@ public class LinearDivider extends Divider {
 
             bottom = parent.getBottom() + params.bottomMargin;
 
-            draw(c, left, top, right, bottom);
+            onDraw(c, left, top, right, bottom);
         }
     }
 

@@ -34,7 +34,7 @@ public class Divider {
         return drawable;
     }
 
-    public void dispatchDraw(Canvas c, RecyclerView parent, View child, Divider divider, UniversalItemDecoration decoration) {
+    public void draw(Canvas c, RecyclerView parent, View child, Divider divider, UniversalItemDecoration decoration) {
         RecyclerView.LayoutManager manager = parent.getLayoutManager();
         if (manager instanceof GridLayoutManager) {
             drawVertical(c, parent, child, divider, decoration);
@@ -63,7 +63,7 @@ public class Divider {
 
     }
 
-    protected final void draw(Canvas c, int left, int top, int right, int bottom) {
+    protected final void onDraw(Canvas c, int left, int top, int right, int bottom) {
         if (drawable != null) {
             drawable.setBounds(left, top, right, bottom);
         }

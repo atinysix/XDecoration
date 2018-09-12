@@ -45,7 +45,7 @@ public class GridDivider extends Divider {
         int top = child.getBottom() + params.bottomMargin;
         int bottom = top + horizontalDividerSize;
 
-        draw(c, left, top, right, bottom);
+        onDraw(c, left, top, right, bottom);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class GridDivider extends Divider {
         int top = child.getTop() - params.topMargin;
         int bottom = child.getBottom() + params.bottomMargin + verticalDividerSize;
 
-        draw(c, left, top, right, bottom);
+        onDraw(c, left, top, right, bottom);
     }
 
     @Override
