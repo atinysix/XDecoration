@@ -14,12 +14,26 @@ public class LinearDivider extends Divider {
 
     private int dividerSize;
 
+    public LinearDivider() {
+
+    }
+
+    public LinearDivider(Drawable drawable, int dividerSize) {
+        super(drawable);
+
+        if (dividerSize > 0) {
+            this.dividerSize = dividerSize;
+        }
+    }
+
     public int getDividerSize() {
         return dividerSize;
     }
 
     public void setDividerSize(int dividerSize) {
-        this.dividerSize = dividerSize;
+        if (dividerSize > 0) {
+            this.dividerSize = dividerSize;
+        }
     }
 
     @Override
@@ -80,11 +94,12 @@ public class LinearDivider extends Divider {
     }
 
     @Override
-    protected void getItemOffsets(Rect outRect, View view, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
-        if (decoration.getOrientation(parent) == UniversalItemDecoration.VERTICAL) {
-            outRect.set(0, 0, 0, dividerSize);
-        } else {
-            outRect.set(0, 0, dividerSize, 0);
-        }
+    protected void getVerticalOffset(Rect outRect, View child, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
+        outRect.set(0, 0, 0, dividerSize);
+    }
+
+    @Override
+    public void getHorizontalOffset(Rect outRect, View child, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
+        outRect.set(0, 0, dividerSize, 0);
     }
 }

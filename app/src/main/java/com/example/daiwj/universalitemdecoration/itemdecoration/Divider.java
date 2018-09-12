@@ -17,21 +17,21 @@ public class Divider {
 
     private int viewType = RecyclerView.INVALID_TYPE;
 
-    private Drawable drawable;
+    private Drawable mDrawable;
 
     public Divider() {
     }
 
     public Divider(Drawable drawable) {
-        this.drawable = drawable;
+        mDrawable = drawable;
     }
 
     public void setDrawable(Drawable drawable) {
-        this.drawable = drawable;
+        mDrawable = drawable;
     }
 
     public Drawable getDrawable() {
-        return drawable;
+        return mDrawable;
     }
 
     public void draw(Canvas c, RecyclerView parent, View child, Divider divider, UniversalItemDecoration decoration) {
@@ -59,23 +59,27 @@ public class Divider {
 
     }
 
-    protected void getItemOffsets(Rect outRect, View child, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
-
-    }
-
     protected final void onDraw(Canvas c, int left, int top, int right, int bottom) {
-        if (drawable != null) {
-            drawable.setBounds(left, top, right, bottom);
+        if (mDrawable != null) {
+            mDrawable.setBounds(left, top, right, bottom);
+            mDrawable.draw(c);
         }
-        drawable.draw(c);
     }
 
-    protected boolean isLastRow(RecyclerView.Adapter adapter, int spanCount, int itemPosition) {
-        return false;
+    protected void getItemOffsets(Rect outRect, View child, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
+        if (decoration.getOrientation(parent) == LinearLayoutManager.VERTICAL) {
+            getVerticalOffset(outRect, child, parent, divider, decoration);
+        } else {
+            getHorizontalOffset(outRect, child, parent, divider, decoration);
+        }
     }
 
-    protected boolean isLastColumn(int spanCount, int spanIndex) {
-        return false;
+    protected void getVerticalOffset(Rect outRect, View child, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
+
+    }
+
+    public void getHorizontalOffset(Rect outRect, View child, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
+
     }
 
     protected int getViewType() {

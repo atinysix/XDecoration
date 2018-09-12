@@ -2,6 +2,7 @@ package com.example.daiwj.universalitemdecoration.itemdecoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -61,7 +62,10 @@ public final class UniversalItemDecoration extends RecyclerView.ItemDecoration {
             }
 
             if (divider != null) {
-                divider.draw(c, parent, child, divider, this);
+                Drawable d = divider.getDrawable();
+                if (d != null) {
+                    divider.draw(c, parent, child, divider, this);
+                }
             }
         }
     }

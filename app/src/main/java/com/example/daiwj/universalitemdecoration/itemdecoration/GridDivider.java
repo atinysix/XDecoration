@@ -2,6 +2,7 @@ package com.example.daiwj.universalitemdecoration.itemdecoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,6 +16,25 @@ public class GridDivider extends Divider {
     private int verticalDividerSize = 0;
 
     private int horizontalDividerSize = 0;
+
+    public GridDivider() {
+    }
+
+    public GridDivider(int verticalDividerSize, int horizontalDividerSize) {
+        this(null, verticalDividerSize, horizontalDividerSize);
+    }
+
+    public GridDivider(Drawable drawable, int verticalDividerSize, int horizontalDividerSize) {
+        super(drawable);
+
+        if (verticalDividerSize >= 0) {
+            this.verticalDividerSize = verticalDividerSize;
+        }
+
+        if (horizontalDividerSize >= 0) {
+            this.horizontalDividerSize = horizontalDividerSize;
+        }
+    }
 
     public int getVerticalDividerSize() {
         return verticalDividerSize;
@@ -41,9 +61,9 @@ public class GridDivider extends Divider {
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
         int left = child.getLeft() - params.leftMargin;
-        int right = child.getRight() + params.rightMargin + verticalDividerSize;
+        int right = child.getRight() + params.rightMargin + horizontalDividerSize;
         int top = child.getBottom() + params.bottomMargin;
-        int bottom = top + horizontalDividerSize;
+        int bottom = top + verticalDividerSize;
 
         onDraw(c, left, top, right, bottom);
     }
@@ -55,74 +75,88 @@ public class GridDivider extends Divider {
         int left = child.getRight() + params.rightMargin;
         int right = left + verticalDividerSize;
         int top = child.getTop() - params.topMargin;
-        int bottom = child.getBottom() + params.bottomMargin + verticalDividerSize;
+        int bottom = child.getBottom() + params.bottomMargin + horizontalDividerSize;
 
         onDraw(c, left, top, right, bottom);
     }
 
     @Override
-    protected void getItemOffsets(Rect outRect, View child, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
+    protected void getVerticalOffset(Rect outRect, View child, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
         final boolean isSingleSpan = isFullSpan(parent, child);
-        final int spanCount = getSpanCount(parent, child);
-        final int spanIndex = getSpanIndex(parent, child);
+        final int spanCount = getSpanCount(parent);
+        final int spanIndex = getSpanIndex(child);
         final int spanIndexLoop = spanIndex % spanCount;
 
-        int left = 0;
-        int top = 0;
-        int right = 0;
-        int bottom = 0;
+        int left;
+        int top;
+        int right;
+        int bottom;
 
-        if (decoration.getOrientation(parent) == UniversalItemDecoration.VERTICAL) {
-            if (isSingleSpan) {
-                left = 0;
-                top = 0;
-                right = 0;
-                bottom = verticalDividerSize;
-            } else {
-                final int eachWidth = horizontalDividerSize / spanCount;
-
-                left = spanIndexLoop * (horizontalDividerSize - eachWidth);
-                top = 0;
-                right = eachWidth - left;
-                bottom = verticalDividerSize;
-
-                if (isLastRow(parent.getAdapter(), spanCount, parent.getChildAdapterPosition(child))) {
-                    bottom = 0;
-                }
-
-                if (isLastColumn(spanCount, spanIndex)) {
-                    right = 0;
-                }
-            }
+        if (isSingleSpan) {
+            left = 0;
+            top = 0;
+            right = 0;
+            bottom = verticalDividerSize;
         } else {
-            if (isSingleSpan) {
-                left = 0;
-                top = 0;
-                right = horizontalDividerSize;
+            final int eachWidth = horizontalDividerSize / spanCount;
+
+            left = spanIndexLoop * (horizontalDividerSize - eachWidth);
+            top = 0;
+            right = eachWidth - left;
+            bottom = verticalDividerSize;
+
+            if (isLastRow(parent, parent.getChildAdapterPosition(child))) {
                 bottom = 0;
-            } else {
-                final int eachWidth = verticalDividerSize / spanCount;
+            }
 
-                left = 0;
-                top = spanIndexLoop * (verticalDividerSize - eachWidth);
-                right = horizontalDividerSize;
-                bottom = eachWidth - top;
-
-                if (isLastRow(parent.getAdapter(), spanCount, parent.getChildAdapterPosition(child))) {
-                    right = 0;
-                }
-
-                if (isLastColumn(spanCount, spanIndex)) {
-                    bottom = 0;
-                }
+            if (isLastColumn(spanCount, spanIndex)) {
+                right = 0;
             }
         }
 
         outRect.set(left, top, right, bottom);
     }
 
-    protected boolean isLastRow(RecyclerView.Adapter adapter, int spanCount, int itemPosition) {
-        final int itemCount = adapter.getItemCount();
+    @Override
+    public void getHorizontalOffset(Rect outRect, View child, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
+        final boolean isSingleSpan = isFullSpan(parent, child);
+        final int spanCount = getSpanCount(parent);
+        final int spanIndex = getSpanIndex(child);
+        final int spanIndexLoop = spanIndex % spanCount;
+
+        int left;
+        int top;
+        int right;
+        int bottom;
+
+        if (isSingleSpan) {
+            left = 0;
+            top = 0;
+            right = horizontalDividerSize;
+            bottom = 0;
+        } else {
+            final int eachWidth = verticalDividerSize / spanCount;
+
+            left = 0;
+            top = spanIndexLoop * (verticalDividerSize - eachWidth);
+            right = horizontalDividerSize;
+            bottom = eachWidth - top;
+
+            if (isLastRow(parent, parent.getChildAdapterPosition(child))) {
+                right = 0;
+            }
+
+            if (isLastColumn(spanCount, spanIndex)) {
+                bottom = 0;
+            }
+        }
+
+        outRect.set(left, top, right, bottom);
+    }
+
+    protected boolean isLastRow(RecyclerView parent, int itemPosition) {
+        final int spanCount = getSpanCount(parent);
+        final int itemCount = parent.getAdapter().getItemCount();
 
         int totalRows = itemCount / spanCount;
         totalRows = itemCount % spanCount == 0 ? totalRows : totalRows + 1;
@@ -137,12 +171,12 @@ public class GridDivider extends Divider {
         return spanIndex % spanCount == spanCount - 1;
     }
 
-    public int getSpanCount(RecyclerView parent, View child) {
+    public int getSpanCount(RecyclerView parent) {
         GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
         return layoutManager.getSpanCount();
     }
 
-    public int getSpanIndex(RecyclerView parent, View child) {
+    public int getSpanIndex(View child) {
         GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) child.getLayoutParams();
         return lp.getSpanIndex();
     }

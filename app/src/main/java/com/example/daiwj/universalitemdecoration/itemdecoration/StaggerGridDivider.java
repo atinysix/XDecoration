@@ -10,12 +10,12 @@ import android.view.View;
  */
 public class StaggerGridDivider extends GridDivider {
 
-    public int getSpanCount(RecyclerView parent, View child) {
+    public int getSpanCount(RecyclerView parent) {
         StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) parent.getLayoutManager();
         return layoutManager.getSpanCount();
     }
 
-    public int getSpanIndex(RecyclerView parent, View itemView) {
+    public int getSpanIndex(View itemView) {
         StaggeredGridLayoutManager.LayoutParams lp = (StaggeredGridLayoutManager.LayoutParams) itemView.getLayoutParams();
         return lp.getSpanIndex();
     }
