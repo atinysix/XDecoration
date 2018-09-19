@@ -13,57 +13,76 @@ import android.view.View;
  */
 public class GridDivider extends Divider {
 
-    private int verticalDividerSize = 0;
+    private int drawableWidth, drawableHeight;
 
-    private int horizontalDividerSize = 0;
+    private int verticalOffset, horizontalOffset;
+
+    private int edgeSize = 0;
 
     public GridDivider() {
     }
 
-    public GridDivider(int verticalDividerSize, int horizontalDividerSize) {
-        this(null, verticalDividerSize, horizontalDividerSize);
+    public int getDrawableWidth() {
+        return drawableWidth;
     }
 
-    public GridDivider(Drawable drawable, int verticalDividerSize, int horizontalDividerSize) {
-        super(drawable);
+    public void setDrawableWidth(int drawableWidth) {
+        this.drawableWidth = drawableWidth;
+    }
 
-        if (verticalDividerSize >= 0) {
-            this.verticalDividerSize = verticalDividerSize;
+    public int getDrawableHeight() {
+        return drawableHeight;
+    }
+
+    public void setDrawableHeight(int drawableHeight) {
+        this.drawableHeight = drawableHeight;
+    }
+
+    public int getVerticalOffset() {
+        return verticalOffset;
+    }
+
+    public void setVerticalOffset(int verticalOffset) {
+        if (verticalOffset > 0) {
+            this.verticalOffset = verticalOffset;
         }
+    }
 
-        if (horizontalDividerSize >= 0) {
-            this.horizontalDividerSize = horizontalDividerSize;
+    public int getHorizontalOffset() {
+        return horizontalOffset;
+    }
+
+    public void setHorizontalOffset(int horizontalOffset) {
+        if (horizontalOffset >= 0) {
+            this.horizontalOffset = horizontalOffset;
         }
     }
 
-    public int getVerticalDividerSize() {
-        return verticalDividerSize;
+    public int getEdgeSize() {
+        return edgeSize;
     }
 
-    public void setVerticalDividerSize(int verticalDividerSize) {
-        if (verticalDividerSize >= 0) {
-            this.verticalDividerSize = verticalDividerSize;
-        }
-    }
-
-    public int getHorizontalDividerSize() {
-        return horizontalDividerSize;
-    }
-
-    public void setHorizontalDividerSize(int horizontalDividerSize) {
-        if (horizontalDividerSize >= 0) {
-            this.horizontalDividerSize = horizontalDividerSize;
+    public void setEdgeSize(int edgeSize) {
+        if (edgeSize > 0) {
+            this.edgeSize = edgeSize;
         }
     }
 
     @Override
     protected void drawVertical(Canvas c, RecyclerView parent, View child, Divider divider, UniversalItemDecoration decoration) {
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+        final Drawable drawable = divider.getDrawable();
+
+        int width = drawable.getIntrinsicWidth();
+        width = width > 0 ? width : drawableWidth;
+
+        int height = drawable.getIntrinsicHeight();
+        height = height > 0 ? height : drawableHeight;
 
         int left = child.getLeft() - params.leftMargin;
-        int right = child.getRight() + params.rightMargin + horizontalDividerSize;
+        int right = child.getRight() + params.rightMargin + width;
         int top = child.getBottom() + params.bottomMargin;
-        int bottom = top + verticalDividerSize;
+        int bottom = top + height;
 
         onDraw(c, left, top, right, bottom);
     }
@@ -71,11 +90,29 @@ public class GridDivider extends Divider {
     @Override
     protected void drawHorizontal(Canvas c, RecyclerView parent, View child, Divider divider, UniversalItemDecoration decoration) {
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+        final Drawable drawable = divider.getDrawable();
+
+        final int spanCount = getSpanCount(parent);
+        final int spanIndex = getSpanIndex(child);
+
+        int width = drawable.getIntrinsicWidth();
+        width = width > 0 ? width : drawableWidth;
+
+        int height = drawable.getIntrinsicHeight();
+        height = height > 0 ? height : drawableHeight;
 
         int left = child.getRight() + params.rightMargin;
-        int right = left + verticalDividerSize;
+        int right = left + width;
         int top = child.getTop() - params.topMargin;
-        int bottom = child.getBottom() + params.bottomMargin + horizontalDividerSize;
+        int bottom = child.getBottom() + params.bottomMargin + height;
+
+        if (isFirstColumn(spanCount, spanIndex)) {
+            left = child.getLeft() - params.leftMargin - edgeSize;
+        }
+
+        if (isLastColumn(spanCount, spanIndex)) {
+            right = left + edgeSize;
+        }
 
         onDraw(c, left, top, right, bottom);
     }
@@ -96,21 +133,25 @@ public class GridDivider extends Divider {
             left = 0;
             top = 0;
             right = 0;
-            bottom = verticalDividerSize;
+            bottom = verticalOffset;
         } else {
-            final int eachWidth = horizontalDividerSize / spanCount;
+            final int eachWidth = horizontalOffset / spanCount;
 
-            left = spanIndexLoop * (horizontalDividerSize - eachWidth);
+            left = spanIndexLoop * (horizontalOffset - eachWidth);
             top = 0;
             right = eachWidth - left;
-            bottom = verticalDividerSize;
+            bottom = verticalOffset;
 
-            if (isLastRow(parent, parent.getChildAdapterPosition(child))) {
-                bottom = 0;
+            if (isFirstColumn(spanCount, spanIndex)) {
+                left = edgeSize;
             }
 
+//            if (isLastRow(parent, parent.getChildAdapterPosition(child))) {
+//                bottom = 0;
+//            }
+
             if (isLastColumn(spanCount, spanIndex)) {
-                right = 0;
+                right = edgeSize;
             }
         }
 
@@ -119,7 +160,7 @@ public class GridDivider extends Divider {
 
     @Override
     public void getHorizontalOffset(Rect outRect, View child, RecyclerView parent, Divider divider, UniversalItemDecoration decoration) {
-        final boolean isSingleSpan = isFullSpan(parent, child);
+        final boolean isFullSpan = isFullSpan(parent, child);
         final int spanCount = getSpanCount(parent);
         final int spanIndex = getSpanIndex(child);
         final int spanIndexLoop = spanIndex % spanCount;
@@ -129,17 +170,17 @@ public class GridDivider extends Divider {
         int right;
         int bottom;
 
-        if (isSingleSpan) {
+        if (isFullSpan) {
             left = 0;
             top = 0;
-            right = horizontalDividerSize;
+            right = horizontalOffset;
             bottom = 0;
         } else {
-            final int eachWidth = verticalDividerSize / spanCount;
+            final int eachWidth = verticalOffset / spanCount;
 
             left = 0;
-            top = spanIndexLoop * (verticalDividerSize - eachWidth);
-            right = horizontalDividerSize;
+            top = spanIndexLoop * (verticalOffset - eachWidth);
+            right = horizontalOffset;
             bottom = eachWidth - top;
 
             if (isLastRow(parent, parent.getChildAdapterPosition(child))) {
@@ -154,6 +195,15 @@ public class GridDivider extends Divider {
         outRect.set(left, top, right, bottom);
     }
 
+    protected boolean isFirstRow(RecyclerView parent, int itemPosition) {
+        final int spanCount = getSpanCount(parent);
+
+        int currentRow = (itemPosition + 1) / spanCount;
+        currentRow = (itemPosition + 1) % spanCount == 0 ? currentRow : currentRow + 1;
+
+        return currentRow == 0;
+    }
+
     protected boolean isLastRow(RecyclerView parent, int itemPosition) {
         final int spanCount = getSpanCount(parent);
         final int itemCount = parent.getAdapter().getItemCount();
@@ -165,6 +215,10 @@ public class GridDivider extends Divider {
         currentRow = (itemPosition + 1) % spanCount == 0 ? currentRow : currentRow + 1;
 
         return currentRow == totalRows;
+    }
+
+    protected boolean isFirstColumn(int spanCount, int spanIndex) {
+        return spanIndex % spanCount == 0;
     }
 
     protected boolean isLastColumn(int spanCount, int spanIndex) {

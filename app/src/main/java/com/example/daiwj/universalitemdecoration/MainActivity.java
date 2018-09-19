@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.daiwj.universalitemdecoration.dividers.CartDividerFactory;
 import com.example.daiwj.universalitemdecoration.itemdecoration.UniversalItemDecoration;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int spanCount = 3;
+        int spanCount = 2;
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         List<Item> data = new ArrayList<>();
 
+        data.add(new BigHeader());
+
         for (int i = 0; i < 2; i++) {
             data.add(new Header());
             for (int j = 0; j < 3; j++) {
@@ -44,12 +47,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Random r = new Random();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             data.add(new RecHeader(r.nextBoolean()));
-
-            final int size = r.nextInt(10) * 2;
-
-            for (int j = 0; j < size; j++) {
+            for (int j = 0; j < 15; j++) {
                 Rec rec = new Rec(r.nextBoolean(), r.nextBoolean(), r.nextBoolean(), r.nextBoolean());
                 data.add(rec);
             }
@@ -58,12 +58,8 @@ public class MainActivity extends AppCompatActivity {
         final MyAdapter adapter = new MyAdapter(this, data);
         recyclerView.setAdapter(adapter);
 
-        int verticalOffset = (int) (getResources().getDisplayMetrics().density * 8f);
-        int horizontalOffset = (int) (getResources().getDisplayMetrics().density * 8f);
-
-//        recyclerView.addItemDecoration(new GridItemDecoration(verticalOffset, horizontalOffset));
-
-        UniversalItemDecoration itemDecoration = new UniversalItemDecoration();
+        UniversalItemDecoration itemDecoration = new UniversalItemDecoration(this);
+        itemDecoration.setDividerFactory(new CartDividerFactory());
 
         recyclerView.addItemDecoration(itemDecoration);
     }
@@ -81,7 +77,10 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         @Override
         public MyVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            if (viewType == Item.TYPE_HEADER) {
+            if (viewType == Item.TYPE_BIG_HEADER) {
+                View view = LayoutInflater.from(context).inflate(R.layout.item_big_header, parent, false);
+                return new HeaderVH(view);
+            } else if (viewType == Item.TYPE_HEADER) {
                 View view = LayoutInflater.from(context).inflate(R.layout.item_header, parent, false);
                 return new HeaderVH(view);
             } else if (viewType == Item.TYPE_PRODUCT) {
@@ -159,7 +158,8 @@ public class MainActivity extends AppCompatActivity {
 
         private boolean isNeedSingleLine(int position) {
             int viewType = getItemViewType(position);
-            return viewType == Item.TYPE_HEADER
+            return viewType == Item.TYPE_BIG_HEADER
+                    || viewType == Item.TYPE_HEADER
                     || viewType == Item.TYPE_PRODUCT
                     || viewType == Item.TYPE_REC_HEADER;
         }

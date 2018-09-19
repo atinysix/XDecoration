@@ -6,10 +6,11 @@ package com.example.daiwj.universalitemdecoration;
  */
 public interface Item {
 
-    int TYPE_HEADER = 1;
-    int TYPE_PRODUCT = 2;
-    int TYPE_REC_HEADER = 3;
-    int TYPE_REC = 4;
+    int TYPE_BIG_HEADER = 1;
+    int TYPE_HEADER = 2;
+    int TYPE_PRODUCT = 3;
+    int TYPE_REC_HEADER = 4;
+    int TYPE_REC = 5;
 
     int getViewType();
 }
