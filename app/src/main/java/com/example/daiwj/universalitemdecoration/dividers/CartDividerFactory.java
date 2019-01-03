@@ -27,23 +27,23 @@ public class CartDividerFactory extends DefaultDividerFactory {
 
     public GridDivider getDefaultGridDivider(Context context, UniversalItemDecoration decoration) {
         CartGridDivider divider = new CartGridDivider();
-        divider.setDrawable(new ColorDrawable(Color.parseColor("#f2f3f4")));
-        divider.setDrawableWidth(20);
-        divider.setDrawableHeight(20);
-        divider.setVerticalOffset(40);
-        divider.setHorizontalOffset(40);
-        divider.setEdgeSize(40);
+//        divider.setDrawable(new ColorDrawable(Color.parseColor("#00ff00")));
+//        divider.setDrawableWidth(40);
+//        divider.setDrawableHeight(40);
+        divider.setVGap(30);
+        divider.setHGap(30);
+        divider.setEdgeSize(45);
         return divider;
     }
 
     public StaggerGridDivider getDefaultStaggerGridDivider(Context context, UniversalItemDecoration decoration) {
         CartStaggerGridDivider divider = new CartStaggerGridDivider();
-        divider.setDrawable(new ColorDrawable(Color.parseColor("#00ff00")));
-        divider.setDrawableWidth(40);
-        divider.setDrawableHeight(40);
-        divider.setVerticalOffset(40);
-        divider.setHorizontalOffset(40);
-        divider.setEdgeSize(30);
+//        divider.setDrawable(new ColorDrawable(Color.parseColor("#00ff00")));
+//        divider.setDrawableWidth(40);
+//        divider.setDrawableHeight(40);
+        divider.setVGap(30);
+        divider.setHGap(30);
+        divider.setEdgeSize(45);
         return divider;
     }
 

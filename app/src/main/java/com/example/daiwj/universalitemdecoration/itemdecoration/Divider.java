@@ -89,4 +89,44 @@ public class Divider {
     public void setViewType(int viewType) {
         this.viewType = viewType;
     }
+
+    protected boolean showLeftEdge(RecyclerView parent, View child) {
+        return true;
+    }
+
+    protected boolean showTopEdge(RecyclerView parent, View child) {
+        return true;
+    }
+
+    protected boolean showRightEdge(RecyclerView parent, View child) {
+        return true;
+    }
+
+    protected boolean showBottomEdge(RecyclerView parent, View child) {
+        return true;
+    }
+
+    protected boolean showVGap(RecyclerView parent, View child) {
+        return true;
+    }
+
+    protected boolean showHGap(RecyclerView parent, View child) {
+        return true;
+    }
+
+    protected boolean isFirstRow(RecyclerView parent, View child) {
+        return false;
+    }
+
+    protected boolean isLastRow(RecyclerView parent, View child) {
+        return false;
+    }
+
+    protected boolean isFirstColumn(RecyclerView parent, View child) {
+        return false;
+    }
+
+    protected boolean isLastColumn(RecyclerView parent, View child) {
+        return false;
+    }
 }

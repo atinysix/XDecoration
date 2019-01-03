@@ -22,33 +22,47 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+    int VERTICAL = 1;
+    int HORIZONTAL = 2;
+
+    int direction = HORIZONTAL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int spanCount = 2;
+        final int spanCount = 3;
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount, GridLayoutManager.VERTICAL, false);
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
+        RecyclerView recyclerViewV = findViewById(R.id.recycler_view_v);
+        RecyclerView recyclerViewH = findViewById(R.id.recycler_view_h);
+
+        RecyclerView recyclerView;
+        if (direction == VERTICAL) {
+            recyclerView = recyclerViewV;
+        } else {
+            recyclerView = recyclerViewH;
+        }
+        recyclerView.setVisibility(View.VISIBLE);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this, direction == VERTICAL ? LinearLayoutManager.VERTICAL : LinearLayoutManager.HORIZONTAL, false);
+//        GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount, direction == VERTICAL ? GridLayoutManager.VERTICAL : GridLayoutManager.HORIZONTAL, false);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(spanCount, direction == VERTICAL ? StaggeredGridLayoutManager.VERTICAL : StaggeredGridLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
 
         List<Item> data = new ArrayList<>();
 
-        data.add(new BigHeader());
-
-        for (int i = 0; i < 2; i++) {
-            data.add(new Header());
-            for (int j = 0; j < 3; j++) {
-                data.add(new Product());
-            }
-        }
+//        data.add(new BigHeader());
+//
+//        for (int i = 0; i < 2; i++) {
+//            data.add(new Header());
+//            for (int j = 0; j < 3; j++) {
+//                data.add(new Product());
+//            }
+//        }
 
         Random r = new Random();
         for (int i = 0; i < 1; i++) {
-            data.add(new RecHeader(r.nextBoolean()));
+//            data.add(new RecHeader(r.nextBoolean()));
             for (int j = 0; j < 15; j++) {
                 Rec rec = new Rec(r.nextBoolean(), r.nextBoolean(), r.nextBoolean(), r.nextBoolean());
                 data.add(rec);
@@ -87,11 +101,16 @@ public class MainActivity extends AppCompatActivity {
                 View view = LayoutInflater.from(context).inflate(R.layout.item_product, parent, false);
                 return new ProductVH(view);
             } else if (viewType == Item.TYPE_REC_HEADER) {
-                View view = LayoutInflater.from(context).inflate(R.layout.item_rec_header, parent, false);
+                View view = LayoutInflater.from(context).inflate(R.layout.item_rec_header_h, parent, false);
                 return new RecHeaderVH(view);
             } else {
-                View view = LayoutInflater.from(context).inflate(R.layout.item_rec, parent, false);
-                return new RecVh(view);
+                if (direction == VERTICAL) {
+                    View view = LayoutInflater.from(context).inflate(R.layout.item_rec, parent, false);
+                    return new RecVh(view);
+                } else {
+                    View view = LayoutInflater.from(context).inflate(R.layout.item_rec_h, parent, false);
+                    return new RecVh(view);
+                }
             }
         }
 
@@ -192,14 +211,14 @@ public class MainActivity extends AppCompatActivity {
 
             public RecHeaderVH(View itemView) {
                 super(itemView);
-                tvLike = itemView.findViewById(R.id.cart_tv_rec_header_center);
-                llLike = itemView.findViewById(R.id.cart_ll_rec_header);
+//                tvLike = itemView.findViewById(R.id.cart_tv_rec_header_center);
+//                llLike = itemView.findViewById(R.id.cart_ll_rec_header);
             }
 
             public void bind() {
                 RecHeader rec = (RecHeader) getItem(getLayoutPosition());
-                tvLike.setVisibility(!rec.hasImage ? View.VISIBLE : View.GONE);
-                llLike.setVisibility(rec.hasImage ? View.VISIBLE : View.GONE);
+//                tvLike.setVisibility(!rec.hasImage ? View.VISIBLE : View.GONE);
+//                llLike.setVisibility(rec.hasImage ? View.VISIBLE : View.GONE);
             }
         }
 
