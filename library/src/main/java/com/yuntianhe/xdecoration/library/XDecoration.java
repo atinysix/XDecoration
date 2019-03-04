@@ -1,4 +1,4 @@
-package com.example.daiwj.universalitemdecoration.itemdecoration;
+package com.yuntianhe.xdecoration.library;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,24 +16,54 @@ import java.util.HashMap;
  * 描述:
  * 作者: daiwj on 2018/9/7 09:32
  */
-public class UniversalItemDecoration extends RecyclerView.ItemDecoration {
+public class XDecoration extends RecyclerView.ItemDecoration {
 
     private Context mContext;
 
     public static final int VERTICAL = 1;
     public static final int HORIZONTAL = 2;
 
-    private DividerFactory defaultDividerFactory = new DefaultDividerFactory();
+    private IDividerFactory defaultDividerFactory = new DefaultDividerFactory();
 
     private final HashMap<Integer, Divider> mDividers = new HashMap<>();
 
-    public UniversalItemDecoration(Context mContext) {
+    public XDecoration(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void setDividerFactory(DividerFactory dividerFactory) {
+    public void setDividerFactory(IDividerFactory dividerFactory) {
         if (dividerFactory != null) {
             this.defaultDividerFactory = dividerFactory;
+        }
+    }
+
+    @Override
+    public final void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+
+        final RecyclerView.LayoutManager manager = parent.getLayoutManager();
+        if (manager == null) {
+            return;
+        }
+
+        final int viewType = parent.getChildViewHolder(view).getItemViewType();
+        Divider divider = getDivider(viewType);
+
+        if (divider == null) {
+            if (manager instanceof GridLayoutManager) {
+                divider = defaultDividerFactory.getDefaultGridDivider(mContext, this);
+            } else if (manager instanceof StaggeredGridLayoutManager) {
+                divider = defaultDividerFactory.getDefaultStaggerGridDivider(mContext, this);
+            } else if (manager instanceof LinearLayoutManager) {
+                divider = defaultDividerFactory.getDefaultLinearDivider(mContext, this);
+            }
+
+            if (divider != null) {
+                addDivider(divider);
+            }
+        }
+
+        if (divider != null) {
+            divider.getItemOffsets(outRect, view, parent, divider, this);
         }
     }
 
@@ -74,36 +104,6 @@ public class UniversalItemDecoration extends RecyclerView.ItemDecoration {
                     divider.draw(c, parent, child, divider, this);
                 }
             }
-        }
-    }
-
-    @Override
-    public final void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-
-        final RecyclerView.LayoutManager manager = parent.getLayoutManager();
-        if (manager == null) {
-            return;
-        }
-
-        final int viewType = parent.getChildViewHolder(view).getItemViewType();
-        Divider divider = getDivider(viewType);
-
-        if (divider == null) {
-            if (manager instanceof GridLayoutManager) {
-                divider = defaultDividerFactory.getDefaultGridDivider(mContext, this);
-            } else if (manager instanceof StaggeredGridLayoutManager) {
-                divider = defaultDividerFactory.getDefaultStaggerGridDivider(mContext, this);
-            } else if (manager instanceof LinearLayoutManager) {
-                divider = defaultDividerFactory.getDefaultLinearDivider(mContext, this);
-            }
-
-            if (divider != null) {
-                addDivider(divider);
-            }
-        }
-
-        if (divider != null) {
-            divider.getItemOffsets(outRect, view, parent, divider, this);
         }
     }
 

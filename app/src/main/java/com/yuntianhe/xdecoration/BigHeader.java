@@ -1,4 +1,4 @@
-package com.example.daiwj.universalitemdecoration;
+package com.yuntianhe.xdecoration;
 
 /**
  * 描述:
@@ -6,7 +6,7 @@ package com.example.daiwj.universalitemdecoration;
  */
 public class BigHeader implements Item {
     @Override
-    public int getViewType() {
+    public int getItemViewType() {
         return TYPE_BIG_HEADER;
     }
 }

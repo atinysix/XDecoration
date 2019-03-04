@@ -1,4 +1,4 @@
-package com.example.daiwj.universalitemdecoration;
+package com.yuntianhe.xdecoration;
 
 /**
  * 描述:
@@ -12,5 +12,5 @@ public interface Item {
     int TYPE_REC_HEADER = 4;
     int TYPE_REC = 5;
 
-    int getViewType();
+    int getItemViewType();
 }

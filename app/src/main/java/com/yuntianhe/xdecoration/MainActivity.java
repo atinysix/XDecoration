@@ -1,4 +1,4 @@
-package com.example.daiwj.universalitemdecoration;
+package com.yuntianhe.xdecoration;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.daiwj.universalitemdecoration.dividers.CartDividerFactory;
-import com.example.daiwj.universalitemdecoration.itemdecoration.UniversalItemDecoration;
+import com.yuntianhe.xdecoration.dividers.TestDividerFactory;
+import com.yuntianhe.xdecoration.library.XDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         Random r = new Random();
         for (int i = 0; i < 1; i++) {
 //            data.add(new RecHeader(r.nextBoolean()));
-            for (int j = 0; j < 15; j++) {
+            for (int j = 0; j < 20; j++) {
                 Rec rec = new Rec(r.nextBoolean(), r.nextBoolean(), r.nextBoolean(), r.nextBoolean());
                 data.add(rec);
             }
@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         final MyAdapter adapter = new MyAdapter(this, data);
         recyclerView.setAdapter(adapter);
 
-        UniversalItemDecoration itemDecoration = new UniversalItemDecoration(this);
-        itemDecoration.setDividerFactory(new CartDividerFactory());
+        XDecoration itemDecoration = new XDecoration(this);
+        itemDecoration.setDividerFactory(new TestDividerFactory());
 
         recyclerView.addItemDecoration(itemDecoration);
     }
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getItemViewType(int position) {
             Item item = mData.get(position);
-            return item.getViewType();
+            return item.getItemViewType();
         }
 
         @Override
@@ -151,9 +151,13 @@ public class MainActivity extends AppCompatActivity {
                 gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
+                        int spanCount = gridLayoutManager.getSpanCount();
                         if (isNeedSingleLine(position)) {
-                            return gridLayoutManager.getSpanCount();
+                            return spanCount;
                         }
+//                        if (position % spanCount == 0) {
+//                            return spanCount - 1;
+//                        }
                         return 1;
                     }
                 });

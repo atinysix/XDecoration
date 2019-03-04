@@ -1,4 +1,4 @@
-package com.example.daiwj.universalitemdecoration;
+package com.yuntianhe.xdecoration;
 
 /**
  * 描述:
@@ -47,7 +47,7 @@ public class Rec implements Item {
     }
 
     @Override
-    public int getViewType() {
+    public int getItemViewType() {
         return TYPE_REC;
     }
 }
