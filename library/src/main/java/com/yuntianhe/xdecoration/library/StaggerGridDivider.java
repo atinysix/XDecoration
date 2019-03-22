@@ -6,7 +6,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 /**
- * 描述:
+ * 描述: 瀑布流布局的分割线，误差范围1px，如果分割线误差要求小，不建议使用
+ *
  * 作者: daiwj on 2018/9/7 15:51
  */
 public class StaggerGridDivider extends GridDivider {
