@@ -39,7 +39,6 @@ public class XDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public final void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-
         final RecyclerView.LayoutManager manager = parent.getLayoutManager();
         if (manager == null) {
             return;
@@ -69,8 +68,8 @@ public class XDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public final void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-
-        if (parent.getLayoutManager() == null) {
+        final RecyclerView.LayoutManager manager = parent.getLayoutManager();
+        if (manager == null) {
             return;
         }
 
@@ -78,9 +77,6 @@ public class XDecoration extends RecyclerView.ItemDecoration {
 
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
-
-            final RecyclerView.LayoutManager manager = parent.getLayoutManager();
-
             final int viewType = parent.getChildViewHolder(child).getItemViewType();
             Divider divider = getDivider(viewType);
 
