@@ -48,6 +48,10 @@ public class XDecoration extends RecyclerView.ItemDecoration {
         Divider divider = getDivider(viewType);
 
         if (divider == null) {
+            divider = getDivider(Divider.DEFAULT_ITEM_TYPE);
+        }
+
+        if (divider == null) {
             if (manager instanceof GridLayoutManager) {
                 divider = defaultDividerFactory.getDefaultGridDivider(mContext, this);
             } else if (manager instanceof StaggeredGridLayoutManager) {
@@ -79,6 +83,10 @@ public class XDecoration extends RecyclerView.ItemDecoration {
             final View child = parent.getChildAt(i);
             final int viewType = parent.getChildViewHolder(child).getItemViewType();
             Divider divider = getDivider(viewType);
+
+            if (divider == null) {
+                divider = getDivider(Divider.DEFAULT_ITEM_TYPE);
+            }
 
             if (divider == null) {
                 if (manager instanceof GridLayoutManager) {
