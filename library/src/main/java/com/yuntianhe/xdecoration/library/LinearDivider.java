@@ -99,43 +99,43 @@ public class LinearDivider extends Divider {
 
     @Override
     protected void getVerticalOffset(Rect outRect, View child, RecyclerView parent, Divider divider, XDecoration decoration) {
-        final int dividerSize = showVGap(parent, child) ? mDividerSize : 0;
+        final int dividerSize = showVGap(parent, child, decoration) ? mDividerSize : 0;
 
-        int left = showLeftEdge(parent, child) ? mEdgeLeft : 0;
-        int top = isFirstRow(parent, child) ? showTopEdge(parent, child) ? mEdgeTop : 0 : 0;
-        int right = showRightEdge(parent, child) ? mEdgeRight : 0;
-        int bottom = isLastRow(parent, child) ? showBottomEdge(parent, child) ? mEdgeBottom : 0 : dividerSize;
+        int left = showLeftEdge(parent, child, decoration) ? mEdgeLeft : 0;
+        int top = isFirstRow(parent, child, decoration) ? showTopEdge(parent, child, decoration) ? mEdgeTop : 0 : 0;
+        int right = showRightEdge(parent, child, decoration) ? mEdgeRight : 0;
+        int bottom = isLastRow(parent, child, decoration) ? showBottomEdge(parent, child, decoration) ? mEdgeBottom : 0 : dividerSize;
         outRect.set(left, top, right, bottom);
     }
 
     @Override
     public void getHorizontalOffset(Rect outRect, View child, RecyclerView parent, Divider divider, XDecoration decoration) {
-        final int dividerSize = showHGap(parent, child) ? mDividerSize : 0;
+        final int dividerSize = showHGap(parent, child, decoration) ? mDividerSize : 0;
 
-        int left = isFirstColumn(parent, child) ? showLeftEdge(parent, child) ? mEdgeLeft : 0 : 0;
-        int top = showTopEdge(parent, child) ? mEdgeTop : 0;
-        int right = isLastColumn(parent, child) ? showRightEdge(parent, child) ? mEdgeRight : 0 : dividerSize;
-        int bottom = showBottomEdge(parent, child) ? mEdgeBottom : 0;
+        int left = isFirstColumn(parent, child, decoration) ? showLeftEdge(parent, child, decoration) ? mEdgeLeft : 0 : 0;
+        int top = showTopEdge(parent, child, decoration) ? mEdgeTop : 0;
+        int right = isLastColumn(parent, child, decoration) ? showRightEdge(parent, child, decoration) ? mEdgeRight : 0 : dividerSize;
+        int bottom = showBottomEdge(parent, child, decoration) ? mEdgeBottom : 0;
         outRect.set(left, top, right, bottom);
     }
 
-    protected boolean isFirstRow(RecyclerView parent, View child) {
+    protected boolean isFirstRow(RecyclerView parent, View child, XDecoration decoration) {
         final int itemPosition = parent.getChildAdapterPosition(child);
         return itemPosition == 0;
     }
 
-    protected boolean isLastRow(RecyclerView parent, View child) {
+    protected boolean isLastRow(RecyclerView parent, View child, XDecoration decoration) {
         final int itemCount = parent.getAdapter().getItemCount();
         final int itemPosition = parent.getChildAdapterPosition(child);
         return itemPosition == itemCount - 1;
     }
 
-    protected boolean isFirstColumn(RecyclerView parent, View child) {
+    protected boolean isFirstColumn(RecyclerView parent, View child, XDecoration decoration) {
         final int itemPosition = parent.getChildAdapterPosition(child);
         return itemPosition == 0;
     }
 
-    protected boolean isLastColumn(RecyclerView parent, View child) {
+    protected boolean isLastColumn(RecyclerView parent, View child, XDecoration decoration) {
         final int itemCount = parent.getAdapter().getItemCount();
         final int itemPosition = parent.getChildAdapterPosition(child);
         return itemPosition == itemCount - 1;

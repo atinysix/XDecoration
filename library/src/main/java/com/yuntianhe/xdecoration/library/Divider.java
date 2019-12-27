@@ -16,9 +16,9 @@ import android.view.View;
  */
 public class Divider {
 
-    public static final int DEFAULT_ITEM_TYPE = RecyclerView.INVALID_TYPE;
+    public static final int DEFAULT_ITEM_VIEW_TYPE = RecyclerView.INVALID_TYPE;
 
-    private int viewType = DEFAULT_ITEM_TYPE;
+    private int itemViewType = DEFAULT_ITEM_VIEW_TYPE;
 
     protected int mEdgeSize = 0;
 
@@ -91,6 +91,38 @@ public class Divider {
         }
     }
 
+    public int getEdgeLeft() {
+        return mEdgeLeft;
+    }
+
+    public void setEdgeLeft(int edgeLeft) {
+        mEdgeLeft = edgeLeft;
+    }
+
+    public int getEdgeTop() {
+        return mEdgeTop;
+    }
+
+    public void setEdgeTop(int edgeTop) {
+        mEdgeTop = edgeTop;
+    }
+
+    public int getEdgeRight() {
+        return mEdgeRight;
+    }
+
+    public void setEdgeRight(int edgeRight) {
+        mEdgeRight = edgeRight;
+    }
+
+    public int getEdgeBottom() {
+        return mEdgeBottom;
+    }
+
+    public void setEdgeBottom(int edgeBottom) {
+        mEdgeBottom = edgeBottom;
+    }
+
     public void draw(Canvas c, RecyclerView parent, View child, Divider divider, XDecoration decoration) {
         RecyclerView.LayoutManager manager = parent.getLayoutManager();
         if (manager instanceof GridLayoutManager) {
@@ -139,56 +171,60 @@ public class Divider {
 
     }
 
-    protected boolean isFirstRow(RecyclerView parent, View child) {
+    protected boolean isFirstRow(RecyclerView parent, View child, XDecoration decoration) {
         return false;
     }
 
-    protected boolean isLastRow(RecyclerView parent, View child) {
+    protected boolean isLastRow(RecyclerView parent, View child, XDecoration decoration) {
         return false;
     }
 
-    protected boolean isFirstColumn(RecyclerView parent, View child) {
+    protected boolean isFirstColumn(RecyclerView parent, View child, XDecoration decoration) {
         return false;
     }
 
-    protected boolean isLastColumn(RecyclerView parent, View child) {
+    protected boolean isLastColumn(RecyclerView parent, View child, XDecoration decoration) {
         return false;
     }
 
-    protected boolean showLeftEdge(RecyclerView parent, View child) {
+    protected boolean showLeftEdge(RecyclerView parent, View child, XDecoration decoration) {
         return mShowLeft;
     }
 
-    protected boolean showTopEdge(RecyclerView parent, View child) {
+    protected boolean showTopEdge(RecyclerView parent, View child, XDecoration decoration) {
         return mShowTop;
     }
 
-    protected boolean showRightEdge(RecyclerView parent, View child) {
+    protected boolean showRightEdge(RecyclerView parent, View child, XDecoration decoration) {
         return mShowRight;
     }
 
-    protected boolean showBottomEdge(RecyclerView parent, View child) {
+    protected boolean showBottomEdge(RecyclerView parent, View child, XDecoration decoration) {
         return mShowBottom;
     }
 
-    protected boolean showVGap(RecyclerView parent, View child) {
+    protected boolean showVGap(RecyclerView parent, View child, XDecoration decoration) {
         return mShowVGap;
     }
 
-    protected boolean showHGap(RecyclerView parent, View child) {
+    protected boolean showHGap(RecyclerView parent, View child, XDecoration decoration) {
         return mShowHGap;
     }
 
-    protected int getViewType() {
-        return viewType;
+    protected int getItemViewType() {
+        return itemViewType;
     }
 
-    public void setViewType(int viewType) {
-        viewType = viewType;
+    public void setItemViewType(int itemViewType) {
+        this.itemViewType = itemViewType;
     }
 
     public XDecoration make(Context context) {
-        XDecoration decoration = new XDecoration(context);
+        return make(context, false);
+    }
+
+    public XDecoration make(Context context, boolean needDefaultDivider) {
+        XDecoration decoration = new XDecoration(context, needDefaultDivider);
         decoration.addDivider(this);
         return decoration;
     }

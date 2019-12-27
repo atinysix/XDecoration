@@ -28,7 +28,14 @@ public class XDecoration extends RecyclerView.ItemDecoration {
     private final HashMap<Integer, Divider> mDividers = new HashMap<>();
 
     public XDecoration(Context mContext) {
+        this(mContext, false);
+    }
+
+    public XDecoration(Context mContext, boolean needDefaultDivider) {
         this.mContext = mContext;
+        if (needDefaultDivider) {
+            addDivider(new DefaultDivider());
+        }
     }
 
     public void setDividerFactory(IDividerFactory dividerFactory) {
@@ -48,7 +55,7 @@ public class XDecoration extends RecyclerView.ItemDecoration {
         Divider divider = getDivider(viewType);
 
         if (divider == null) {
-            divider = getDivider(Divider.DEFAULT_ITEM_TYPE);
+            divider = getDivider(Divider.DEFAULT_ITEM_VIEW_TYPE);
         }
 
         if (divider == null) {
@@ -85,7 +92,7 @@ public class XDecoration extends RecyclerView.ItemDecoration {
             Divider divider = getDivider(viewType);
 
             if (divider == null) {
-                divider = getDivider(Divider.DEFAULT_ITEM_TYPE);
+                divider = getDivider(Divider.DEFAULT_ITEM_VIEW_TYPE);
             }
 
             if (divider == null) {
@@ -111,11 +118,12 @@ public class XDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    public synchronized void addDivider(Divider divider) {
-        final int viewType = divider.getViewType();
+    public XDecoration addDivider(Divider divider) {
+        final int viewType = divider.getItemViewType();
         if (!mDividers.containsKey(viewType)) {
             mDividers.put(viewType, divider);
         }
+        return this;
     }
 
     public Divider getDivider(int viewType) {

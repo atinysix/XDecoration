@@ -9,7 +9,7 @@ import android.view.View;
 
 /**
  * 描述: 网格布局的分割线，误差范围1px，如果分割线误差要求小，不建议使用
- *
+ * <p>
  * 作者: daiwj on 2018/9/7 15:51
  */
 public class GridDivider extends Divider {
@@ -57,7 +57,7 @@ public class GridDivider extends Divider {
             mHGap = HGap;
         }
     }
-    
+
     @Override
     protected void drawVertical(Canvas c, RecyclerView parent, View child, Divider divider, XDecoration decoration) {
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
@@ -155,21 +155,28 @@ public class GridDivider extends Divider {
         int right;
         int bottom;
 
-        left = showLeftEdge(parent, child) ? computeLeft(spanCount, spanIndex, averageOffset) : 0;
-        top = 0;
-        if (showRightEdge(parent, child)) {
+        if (showLeftEdge(parent, child, decoration)) {
+            left = isFullSpan ? mEdgeLeft : computeLeft(spanCount, spanIndex + spanSize - 1, averageOffset);
+        } else {
+            left = 0;
+        }
+
+        if (showTopEdge(parent, child, decoration) && isFirstRow(parent, child, decoration)) {
+            top = mEdgeTop;
+        } else {
+            top = 0;
+        }
+
+        if (showRightEdge(parent, child, decoration)) {
             right = isFullSpan ? mEdgeRight : computeRight(spanCount, spanIndex + spanSize - 1, averageOffset);
         } else {
             right = 0;
         }
-        bottom = showVGap(parent, child) ? mVGap : 0;
 
-        if (showTopEdge(parent, child) && isFirstRow(parent, child, decoration)) {
-            top = mEdgeTop;
-        }
-
-        if (showBottomEdge(parent, child) && isLastRow(parent, child, decoration)) {
+        if (showBottomEdge(parent, child, decoration) && isLastRow(parent, child, decoration)) {
             bottom = mEdgeBottom;
+        } else {
+            bottom = showVGap(parent, child, decoration) ? mVGap : 0;
         }
 
         outRect.set(left, top, right, bottom);
@@ -193,21 +200,28 @@ public class GridDivider extends Divider {
         int right;
         int bottom;
 
-        left = 0;
-        top = showTopEdge(parent, child) ? computeTop(spanCount, spanIndex, averageOffset) : 0;
-        right = showHGap(parent, child) ? mHGap : 0;
-        if (showBottomEdge(parent, child)) {
+        if (showLeftEdge(parent, child, decoration) && isFirstColumn(parent, child, decoration)) {
+            left = mEdgeLeft;
+        } else {
+            left = 0;
+        }
+
+        if (showTopEdge(parent, child, decoration)) {
+            top = isFullSpan ? mEdgeTop : computeTop(spanCount, spanIndex + spanSize - 1, averageOffset);
+        } else {
+            top = 0;
+        }
+
+        if (showBottomEdge(parent, child, decoration)) {
             bottom = isFullSpan ? mEdgeBottom : computeBottom(spanCount, spanIndex + spanSize - 1, averageOffset);
         } else {
             bottom = 0;
         }
 
-        if (showLeftEdge(parent, child) && isFirstColumn(parent, child, decoration)) {
-            left = mEdgeLeft;
-        }
-
-        if (showRightEdge(parent, child) && isLastColumn(parent, child, decoration)) {
+        if (showRightEdge(parent, child, decoration) && isLastColumn(parent, child, decoration)) {
             right = mEdgeRight;
+        } else {
+            right = showHGap(parent, child, decoration) ? mHGap : 0;
         }
 
         outRect.set(left, top, right, bottom);
@@ -261,6 +275,10 @@ public class GridDivider extends Divider {
         }
     }
 
+    protected boolean isEnableHeaderView() {
+        return false;
+    }
+
     protected boolean isFirstRow(RecyclerView parent, View child, XDecoration decoration) {
         final GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
         final GridLayoutManager.SpanSizeLookup lookup = layoutManager.getSpanSizeLookup();
@@ -268,6 +286,11 @@ public class GridDivider extends Divider {
         final int itemPosition = parent.getChildAdapterPosition(child);
         final int spanCount = layoutManager.getSpanCount();
         final int spanIndex = lp.getSpanIndex();
+
+        if (isEnableHeaderView()) {
+            return itemPosition == 0;
+        }
+
         if (decoration.getOrientation(parent) == XDecoration.VERTICAL) {
             return lookup.getSpanGroupIndex(itemPosition, spanCount) == lookup.getSpanGroupIndex(0, spanCount);
         } else {
@@ -296,6 +319,11 @@ public class GridDivider extends Divider {
         final int itemPosition = parent.getChildAdapterPosition(child);
         final int spanCount = layoutManager.getSpanCount();
         final int spanIndex = lp.getSpanIndex();
+
+        if (isEnableHeaderView()) {
+            return itemPosition == 0;
+        }
+
         if (decoration.getOrientation(parent) == XDecoration.VERTICAL) {
             return spanIndex % spanCount == 0;
         } else {
@@ -316,4 +344,5 @@ public class GridDivider extends Divider {
             return lookup.getSpanGroupIndex(itemPosition, spanCount) == lookup.getSpanGroupIndex(parent.getAdapter().getItemCount() - 1, spanCount);
         }
     }
+
 }
